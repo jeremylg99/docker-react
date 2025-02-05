@@ -1,0 +1,26 @@
+version: '3'
+services: 
+  web: 
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+#Volumes can be used as a plug/backstop!
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
+#Test container is solely responsible for
+#running tests, and re-running anytime test
+#files are changed. This is accomplished by
+#inserting an overriding command, basically
+#starting two containers at once through
+#'docker compose up'
